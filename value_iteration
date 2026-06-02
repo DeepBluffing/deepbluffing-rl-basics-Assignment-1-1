@@ -1,0 +1,48 @@
+from dp_utils import TabularPolicy, TabularValueFunction, QTable
+  
+class ValueIteration:
+    def __init__(self, mdp, values):
+        self.mdp = mdp
+        self.values = values
+
+    def value_iteration(self, max_iterations=100, theta=0.001):
+        """ Iteratively updates state values until the maximum change is less than theta. """
+        
+        for i in range(max_iterations):
+            delta = 0.0
+            new_values = TabularValueFunction()
+            
+            for state in self.mdp.get_states():
+                qtable = QTable(alpha=1.0)
+                
+                for action in self.mdp.get_actions(state):
+                    new_value = 0.0
+                    
+                    # ==========================================
+                    # TODO 1: Calculate Q(s, a)
+                    # Loop through self.mdp.get_transitions(state, action) to get (new_state, probability).
+                    # Get the reward using self.mdp.get_reward(state, action, new_state).
+                    # Update 'new_value' using the Bellman expectation:
+                    # probability * (reward + (discount_factor * value_of_new_state))
+                    # ==========================================
+                    
+                    pass # Replace this pass with your logic
+
+                    qtable.update(state, action, new_value)
+
+                # ==========================================
+                # TODO 2: Update V(s)
+                # Find the maximum Q-value for this state using qtable.get_max_q().
+                # Update 'delta' to track the maximum change in value across all states.
+                # Save the new max Q-value into 'new_values'.
+                # ==========================================
+                
+                pass # Replace this pass with your logic
+
+            self.values.merge(new_values)
+
+            # Terminate if converged
+            if delta < theta:
+                return i
+                
+        return max_iterations
